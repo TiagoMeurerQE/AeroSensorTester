@@ -1,0 +1,8 @@
+numpy
+scipy
+tensorflow
+tensorflow-metal
+dash
+plotly
+matplotlib
+pytest
