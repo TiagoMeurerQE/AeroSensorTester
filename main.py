@@ -17,3 +17,10 @@ def build_anomaly_model(input_dim):
     model.compile(optimizer='adam', loss='mse')
     return model
 
+# Train on normal data (simulate once then save model)
+def train_model():
+    normal_data = run_test_cycle(1000, anomaly_chance=0)  # No anomalies
+    model = build_anomaly_model(1)  # Per-sample detection for simplicity
+    model.fit(normal_data, normal_data, epochs=50, batch_size=32)
+    model.save('anomaly_model.h5')
+    return model
