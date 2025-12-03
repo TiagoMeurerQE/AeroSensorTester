@@ -1,6 +1,7 @@
 import ctypes
 import numpy as np
 import tensorflow as tf
+from scipy import signal
 
 lib = ctypes.CDLL('./sensor_sim.so')
 lib.simulate_sensor_data.restype = ctypes.POINTER(ctypes.c_float)
