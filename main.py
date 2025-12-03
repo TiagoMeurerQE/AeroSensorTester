@@ -19,8 +19,15 @@ def build_anomaly_model(input_dim):
 
 # Train on normal data (simulate once then save model)
 def train_model():
-    normal_data = run_test_cycle(1000, anomaly_chance=0)  # No anomalies
-    model = build_anomaly_model(1)  # Per-sample detection for simplicity
+    normal_data = run_test_cycle(1000, anomaly_chance=0)  
+    model = build_anomaly_model(1)  
     model.fit(normal_data, normal_data, epochs=50, batch_size=32)
     model.save('anomaly_model.h5')
     return model
+
+# Run simulation cycle
+def run_test_cycle(num_samples=100, base_value=0.0, noise_amp=1.0, anomaly_chance=5):
+    data_ptr = lib.simulate_sensor_data(num_samples, base_value, noise_amp, anomaly_chance)
+    raw_data = np.ctypeslib.as_array(data_ptr, shape=(num_samples,))
+    processed = signal.detrend(raw_data)  
+    return processed.reshape(-1, 1)  
