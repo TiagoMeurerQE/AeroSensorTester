@@ -32,3 +32,17 @@ def run_test_cycle(num_samples=100, base_value=0.0, noise_amp=1.0, anomaly_chanc
     raw_data = np.ctypeslib.as_array(data_ptr, shape=(num_samples,))
     processed = signal.detrend(raw_data)  
     return processed.reshape(-1, 1)  
+
+# Anomalies detection
+def detect_anomalies(model, data, threshold=0.1):
+    reconstructions = model.predict(data)
+    mse = np.mean(np.power(data - reconstructions, 2), axis=1)
+    return mse > threshold
+
+# Example usage
+if __name__ == "__main__":
+    # model = tf.keras.models.load_model('anomaly_model.h5')  # Or train_model() first time
+    model = train_model()  # Run training first time
+    data = run_test_cycle(200)
+    anomalies = detect_anomalies(model, data)
+    print(f"Detected {np.sum(anomalies)} anomalies in {len(data)} samples.")
