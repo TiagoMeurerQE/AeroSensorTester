@@ -1,2 +1,2 @@
 all:
-    gcc -shared -o sensor_sim.so -fPIC sensor_sim.c -lm
+	gcc -shared -o sensor_sim.so -fPIC sensor_sim.c -lm
